@@ -1,111 +1,283 @@
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alexandrino</title>
+    <title>Alexandrino's Crypto Adventure</title>
     <style>
+        :root {
+            --primary-color: #6b4f3d;
+            --secondary-color: #d4af37;
+            --accent-color: #8a6b5a;
+            --text-color: #5a3a22;
+            --background-color: #f8f3e6;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: #0f0f0f;
-            color: #f0c040;
+            font-family: 'Garamond', serif;
             text-align: center;
-            padding: 50px;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 20px;
+            background-image: url('https://images.unsplash.com/photo-1586829402150-ccd91b7b9c2f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--text-color);
         }
-        #bitcoin {
-            font-size: 2em;
+
+        .header {
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        img {
+            max-width: 80%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 5px solid var(--secondary-color);
             margin-bottom: 20px;
-            transition: transform 0.2s;
         }
-        button {
-            font-size: 1.5em;
-            padding: 10px 20px;
-            background: #f0c040;
-            color: #0f0f0f;
+
+        .game-container {
+            margin-top: 30px;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 3px solid var(--primary-color);
+        }
+
+        .click-button {
+            padding: 20px 40px;
+            font-size: 24px;
+            background-color: var(--primary-color);
+            color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.3s;
+            margin: 20px 0;
+            font-family: 'Garamond', serif;
+            box-shadow: 3px 3px 0 var(--secondary-color);
         }
-        button:hover {
-            background: #ffd860;
+
+        .click-button:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 5px 5px 0 var(--secondary-color);
         }
-        #achievements {
+
+        .click-button:active {
+            transform: translateY(0);
+            box-shadow: 3px 3px 0 var(--secondary-color);
+        }
+
+        .score-display {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: var(--primary-color);
+        }
+
+        .game-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .achievements {
             margin-top: 30px;
             text-align: left;
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            border: 1px solid var(--secondary-color);
         }
+
         .achievement {
-            background: #1e1e1e;
-            margin: 5px 0;
-            padding: 10px;
-            border-left: 5px solid #f0c040;
-            opacity: 0.6;
-            transition: all 0.3s ease-in-out;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-left: 4px solid var(--secondary-color);
+            background-color: rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
         }
-        .achievement.unlocked {
-            opacity: 1;
+
+        .achievement::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+        }
+
+        .achievement-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
             font-weight: bold;
-            border-left-color: #00ff00;
+        }
+
+        .achievement-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+
+        .achievement-description {
+            font-size: 14px;
+            color: var(--text-color);
+        }
+
+        .achievement-locked {
+            opacity: 0.5;
+        }
+
+        .achievement-unlocked {
+            animation: pulse 1s ease;
+        }
+
+        .crypto-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 10px;
+            height: 8px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--secondary-color);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.3s ease;
         }
     </style>
 </head>
 <body>
-
-    <center>
+    <div class="header">
+        <h1>Alexandrino's Crypto Adventure</h1>
+    </div>
+    <div>
         <img src="alexandrino.jpg" alt="Alexandrino">
-    </center>
+    </div>
+    <div>
+        <p>Amass crypto wealth in this medieval French-inspired adventure!</p>
+    </div>
 
-    <h1></h1>
-    <div id="bitcoin">Bitcoins: 0</div>
-    <button onclick="mineBitcoin()">💰 Mine Bitcoin</button>
+    <div class="game-container">
+        <div class="game-title">Crypto Clicker</div>
+        <div class="score-display">Bitcoins: <span id="score">0</span> ₿</div>
+        <button class="click-button" onclick="incrementScore()">Mine Bitcoin!</button>
 
-    <div id="achievements">
-        <h2>Achievements</h2>
-        <div class="achievement" id="achv1">First Satoshi (1 BTC)</div>
-        <div class="achievement" id="achv2">Early Adopter (10 BTC)</div>
-        <div class="achievement" id="achv3">Miner League (50 BTC)</div>
-        <div class="achievement" id="achv4">Whale Watcher (100 BTC)</div>
+        <div class="achievements">
+            <h3>Crypto Achievements</h3>
+            <div id="achievement-1" class="achievement achievement-locked" data-required="10">
+                <div class="achievement-icon">₿</div>
+                <div>
+                    <div class="achievement-name">Satellite</div>
+                    <div class="achievement-description">Earn 10 Bitcoins - The smallest unit of Bitcoin measurement</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progress-1"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="achievement-2" class="achievement achievement-locked" data-required="50">
+                <div class="achievement-icon">🏦</div>
+                <div>
+                    <div class="achievement-name">Bankroll</div>
+                    <div class="achievement-description">Earn 50 Bitcoins - Enough to open a small crypto bank</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progress-2"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="achievement-3" class="achievement achievement-locked" data-required="100">
+                <div class="achievement-icon">🚀</div>
+                <div>
+                    <div class="achievement-name">Moon Mission</div>
+                    <div class="achievement-description">Earn 100 Bitcoins - Time to say you're going to the moon!</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progress-3"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="achievement-4" class="achievement achievement-locked" data-required="500">
+                <div class="achievement-icon">👑</div>
+                <div>
+                    <div class="achievement-name">Crypto King</div>
+                    <div class="achievement-description">Earn 500 Bitcoins - You're now a crypto monarch!</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progress-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        let bitcoins = parseInt(localStorage.getItem('bitcoins')) || 0;
-        const bitcoinDisplay = document.getElementById("bitcoin");
+        let score = 0;
+        const achievements = [
+            { id: 'achievement-1', required: 10 },
+            { id: 'achievement-2', required: 50 },
+            { id: 'achievement-3', required: 100 },
+            { id: 'achievement-4', required: 500 }
+        ];
 
-        function mineBitcoin() {
-            bitcoins++;
-            bitcoinDisplay.innerText = `Bitcoins: ${bitcoins}`;
-            bitcoinDisplay.style.transform = 'scale(1.1)';
+        function incrementScore() {
+            score++;
+            document.getElementById('score').textContent = score;
+
+            // Update progress bars
+            achievements.forEach(achievement => {
+                const progress = Math.min((score / achievement.required) * 100, 100);
+                document.getElementById(`progress-${achievement.id.slice(-1)}`).style.width = `${progress}%`;
+
+                // Check if achievement is unlocked
+                if (score >= achievement.required && document.getElementById(achievement.id).classList.contains('achievement-locked')) {
+                    unlockAchievement(achievement.id);
+                }
+            });
+        }
+
+        function unlockAchievement(achievementId) {
+            const achievementElement = document.getElementById(achievementId);
+            achievementElement.classList.remove('achievement-locked');
+            achievementElement.classList.add('achievement-unlocked');
+
+            // Remove the unlocked class after the animation completes
             setTimeout(() => {
-                bitcoinDisplay.style.transform = 'scale(1)';
-            }, 100);
-            localStorage.setItem('bitcoins', bitcoins);
-            checkAchievements();
+                achievementElement.classList.remove('achievement-unlocked');
+            }, 1000);
         }
-
-        function checkAchievements() {
-            if (bitcoins >= 1) unlock("achv1");
-            if (bitcoins >= 10) unlock("achv2");
-            if (bitcoins >= 50) unlock("achv3");
-            if (bitcoins >= 100) unlock("achv4");
-        }
-
-        function unlock(id) {
-            const el = document.getElementById(id);
-            if (!el.classList.contains("unlocked")) {
-                el.classList.add("unlocked");
-                el.innerText += " ✅";
-            }
-        }
-
-        function loadAchievements() {
-            checkAchievements();
-        }
-
-        // Initialize on load
-        bitcoinDisplay.innerText = `Bitcoins: ${bitcoins}`;
-        loadAchievements();
     </script>
 </body>
 </html>
