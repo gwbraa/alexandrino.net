@@ -1,0 +1,111 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alexandrino</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f0f0f;
+            color: #f0c040;
+            text-align: center;
+            padding: 50px;
+        }
+        #bitcoin {
+            font-size: 2em;
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+        button {
+            font-size: 1.5em;
+            padding: 10px 20px;
+            background: #f0c040;
+            color: #0f0f0f;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #ffd860;
+        }
+        #achievements {
+            margin-top: 30px;
+            text-align: left;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .achievement {
+            background: #1e1e1e;
+            margin: 5px 0;
+            padding: 10px;
+            border-left: 5px solid #f0c040;
+            opacity: 0.6;
+            transition: all 0.3s ease-in-out;
+        }
+        .achievement.unlocked {
+            opacity: 1;
+            font-weight: bold;
+            border-left-color: #00ff00;
+        }
+    </style>
+</head>
+<body>
+
+    <center>
+        <img src="alexandrino.jpg" alt="Alexandrino">
+    </center>
+
+    <h1>Bitcoin Clicker</h1>
+    <div id="bitcoin">Bitcoins: 0</div>
+    <button onclick="mineBitcoin()">💰 Mine Bitcoin</button>
+
+    <div id="achievements">
+        <h2>Achievements</h2>
+        <div class="achievement" id="achv1">First Satoshi (1 BTC)</div>
+        <div class="achievement" id="achv2">Early Adopter (10 BTC)</div>
+        <div class="achievement" id="achv3">Miner League (50 BTC)</div>
+        <div class="achievement" id="achv4">Whale Watcher (100 BTC)</div>
+    </div>
+
+    <script>
+        let bitcoins = parseInt(localStorage.getItem('bitcoins')) || 0;
+        const bitcoinDisplay = document.getElementById("bitcoin");
+
+        function mineBitcoin() {
+            bitcoins++;
+            bitcoinDisplay.innerText = `Bitcoins: ${bitcoins}`;
+            bitcoinDisplay.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                bitcoinDisplay.style.transform = 'scale(1)';
+            }, 100);
+            localStorage.setItem('bitcoins', bitcoins);
+            checkAchievements();
+        }
+
+        function checkAchievements() {
+            if (bitcoins >= 1) unlock("achv1");
+            if (bitcoins >= 10) unlock("achv2");
+            if (bitcoins >= 50) unlock("achv3");
+            if (bitcoins >= 100) unlock("achv4");
+        }
+
+        function unlock(id) {
+            const el = document.getElementById(id);
+            if (!el.classList.contains("unlocked")) {
+                el.classList.add("unlocked");
+                el.innerText += " ✅";
+            }
+        }
+
+        function loadAchievements() {
+            checkAchievements();
+        }
+
+        // Initialize on load
+        bitcoinDisplay.innerText = `Bitcoins: ${bitcoins}`;
+        loadAchievements();
+    </script>
+</body>
+</html>
